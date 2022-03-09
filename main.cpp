@@ -10,13 +10,13 @@ class Masina{
 
 public:
     Masina(const std::string& nr_inmatriculare, const std::string& marca, const std::string& model, const std::string& culoare, const std::string& tip_combustibil, int an_fabricatie, int nr_kilometri, float pret_inchiriere, bool disponibila):
+            an_fabricatie(an_fabricatie),
+            nr_kilometri(nr_kilometri),
             nr_inmatriculare(nr_inmatriculare),
             tip_combustibil(tip_combustibil),
             culoare(culoare),
             model(model),
             marca(marca),
-            an_fabricatie(an_fabricatie),
-            nr_kilometri(nr_kilometri),
             disponibila(disponibila),
             pret_inchiriere(pret_inchiriere)
     {
@@ -24,13 +24,13 @@ public:
     }
 
     Masina(const Masina& other):
+            an_fabricatie(other.an_fabricatie),
+            nr_kilometri(other.nr_kilometri),
             nr_inmatriculare(other.nr_inmatriculare),
             tip_combustibil(other.tip_combustibil),
             culoare(other.culoare),
             model(other.model),
             marca(other.marca),
-            an_fabricatie(other.an_fabricatie),
-            nr_kilometri(other.nr_kilometri),
             disponibila(other.disponibila),
             pret_inchiriere(other.pret_inchiriere)
     {}
@@ -150,7 +150,11 @@ class Admin{
 
 public:
     Admin(const Reprezentanta& rep, const std::string& username, const std::string& email, const std::string& parola, const std::string& nr_telefon):
-            rep(rep), username(username), email(email), parola(parola), nr_telefon(nr_telefon){
+            rep(rep),
+            parola(parola),
+            username(username),
+            email(email),
+            nr_telefon(nr_telefon){
         std::cout << "Contul admin-ului cu username-ul " << username << "a fost creat.\n";
     }
 
