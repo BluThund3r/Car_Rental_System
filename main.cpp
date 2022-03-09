@@ -80,7 +80,7 @@ class User{
     bool are_masina;
 
 public:
-    User(std::string username, std::string email, std::string parola, std::string data_nasterii, std::string cnp, std::string nume, std::string prenume, int varsta, float bal, bool are_masina):
+    User(const std::string& username, const std::string& email, const std::string& parola, const std::string& data_nasterii, const std::string& cnp, const std::string& nume, const std::string& prenume, int varsta, float bal, bool are_masina):
             username(username), email(email), parola(parola), data_nasterii(data_nasterii), cnp(cnp), nume(nume), prenume(prenume), varsta(varsta), bal(bal), are_masina(are_masina)
     {
         std::cout << "A fost creat contul utilizatorului cu username-ul " << username << ".\n";
@@ -117,7 +117,7 @@ class Reprezentanta{
     int id, nr_masini, nr_masini_disp;
 
 public:
-    Reprezentanta(std::vector<Masina> masini , std::string adresa, int id, int nr_masini, int nr_masini_disp):
+    Reprezentanta(const std::vector<Masina>& masini , const std::string& adresa, int id, int nr_masini, int nr_masini_disp):
             masini(masini), adresa(adresa), id(id), nr_masini(nr_masini), nr_masini_disp(nr_masini_disp)
     {
         std::cout << "Reprezentanta cu id-ul " << id << "a fost adaugata in aplicatie.\n";
