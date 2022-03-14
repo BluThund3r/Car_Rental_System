@@ -93,11 +93,16 @@ jobs:
       #     sudo apt-get update
       #     sudo apt-get install ...
 
-      - name: Install clang-tidy and libc++ (Linux Clang 12)
+       - name: Install clang-tidy and libc++ (Linux Clang 12)
         if: runner.os == 'Linux' && matrix.cxx == 'clang++-12'
         run: |
           sudo apt-get update
           sudo apt-get install clang-tidy libc++-12-dev libc++abi-12-dev
+      - name: Install ninja libc++ (Linux Clang 11)
+        if: runner.os == 'Linux' && matrix.cxx == 'clang++-12'
+        run: |
+          sudo apt-get update
+          sudo apt-get install ninja-build libc++-11-dev libc++abi-11-dev
 
       - name: Install ninja libc++ (Linux Clang 11)
         if: runner.os == 'Linux' && matrix.cxx == 'clang++-11'
@@ -253,6 +258,7 @@ jobs:
             -DLLVM_USE_SANITIZER=MemoryWithOrigins \
             -DCMAKE_BUILD_WITH_INSTALL_RPATH=true
           cmake --build . -j6 -- cxx cxxabi
+
 
       - name: Sanitizers
         # run one sanitizer for each OS to avoid building extra binaries;
