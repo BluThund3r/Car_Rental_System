@@ -11,22 +11,22 @@ class Masina{
     int fab_year, no_km;
     std::string reg_plate, fuel, color, model, co;
     bool is_hired;
-    float hire_price;
+    double hire_price;
 
 public:
-    Masina(const std::string& reg_plate, const std::string& co, const std::string& model, const std::string& color, const std::string& fuel, int fab_year, int no_km, float hire_price, bool is_hired);
+    Masina(const std::string& reg_plate, const std::string& co, const std::string& model, const std::string& color, const std::string& fuel, int fab_year, int no_km, double hire_price, bool is_hired);
     Masina(const Masina& other);
     Masina& operator=(const Masina& other);
-    bool operator==(Masina&);
+    bool operator==(const Masina&);
     ~Masina();
     std::string get_reg_plate(){return reg_plate;}
     friend std::ostream& operator<<(std::ostream& os, const Masina& car);
     friend class Reprezentanta;
-    float get_price(){return hire_price;}
+    double get_price(){return hire_price;}
     void set_hire_status(bool status){is_hired = status;}
 };
 
-Masina::Masina(const std::string& reg_plate, const std::string& co, const std::string& model, const std::string& color, const std::string& fuel, int fab_year, int no_km, float hire_price, bool is_hired):
+Masina::Masina(const std::string& reg_plate, const std::string& co, const std::string& model, const std::string& color, const std::string& fuel, int fab_year, int no_km, double hire_price, bool is_hired):
         fab_year(fab_year),
         no_km(no_km),
         reg_plate(reg_plate),
@@ -65,7 +65,7 @@ Masina& Masina::operator=(const Masina& other){
     return *this;
 }
 
-bool Masina::operator==(Masina& m){
+bool Masina::operator==(const Masina& m){
     if(this->reg_plate != m.reg_plate)
         return false;
     return true;
@@ -137,13 +137,13 @@ void Reprezentanta::delete_car(Masina& m){
 }
 
 Reprezentanta::Reprezentanta(const std::vector<Masina*>& cars , const std::string& address, int id):
-        cars(cars), address(address), id(id), no_cars(cars.size()){
+        cars(cars), address(address), id(id), no_cars((int)cars.size()){
     std::cout << "Reprezentanta cu id-ul " << id << " a fost adaugata in aplicatie.\n";
 }
 
 Reprezentanta::~Reprezentanta(){
     std::cout << "Reprezentanta cu id-ul " << id << " a fost stearsa din aplicatie!\n";
-};
+}
 
 std::ostream& operator<<(std::ostream& os, const Reprezentanta& rep){
     os  << "========== Reprezentanta ==========\n"
@@ -165,17 +165,17 @@ std::ostream& operator<<(std::ostream& os, const Reprezentanta& rep){
 class User{
     std::string username, email, pass, b_day, cnp, name;
     int age;
-    float bal;
+    double bal;
     Masina* hired_car;
 
 
 public:
     void hire(Reprezentanta&, Masina&);
     void unhire();
-    User(const std::string& username, const std::string& email, const std::string& pass, const std::string& b_day, const std::string& cnp, const std::string& name, int age, float bal, Masina* hired_car);
+    User(const std::string& username, const std::string& email, const std::string& pass, const std::string& b_day, const std::string& cnp, const std::string& name, int age, double bal, Masina* hired_car);
     ~User();
     friend std::ostream& operator<<(std::ostream& os, const User& user);
-    void load_account(float value){bal += value;}
+    void load_account(double value){bal += value;}
 };
 
 void User::unhire(){
@@ -218,7 +218,7 @@ void User::hire(Reprezentanta& r, Masina& m){
 
 }
 
-User::User(const std::string& username, const std::string& email, const std::string& pass, const std::string& b_day, const std::string& cnp, const std::string& name, int age, float bal, Masina* hired_car):
+User::User(const std::string& username, const std::string& email, const std::string& pass, const std::string& b_day, const std::string& cnp, const std::string& name, int age, double bal, Masina* hired_car):
         username(username), email(email), pass(pass), b_day(b_day), cnp(cnp), name(name), age(age), bal(bal), hired_car(hired_car){
     std::cout << "A fost creat contul utilizatorului cu username-ul " << username << ".\n";
 }
@@ -258,7 +258,7 @@ public:
 
 Admin::~Admin(){
     std::cout << "Contul admin-ului cu username-ul" << username << " a fost sters din aplicatie!\n";
-};
+}
 
 Admin::Admin(Reprezentanta& rep, const std::string& username, const std::string& email, const std::string& pass, const std::string& nr_telefon):
         rep(&rep),
