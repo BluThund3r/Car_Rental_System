@@ -17,7 +17,7 @@ public:
     Masina(const std::string& reg_plate, const std::string& co, const std::string& model, const std::string& color, const std::string& fuel, int fab_year, int no_km, double hire_price, bool is_hired);
     Masina(const Masina& other);
     Masina& operator=(const Masina& other);
-    bool operator==(const Masina&);
+//    bool operator==(const Masina&);
     ~Masina();
     std::string get_reg_plate(){return reg_plate;}
     friend std::ostream& operator<<(std::ostream& os, const Masina& car);
@@ -65,11 +65,11 @@ Masina& Masina::operator=(const Masina& other){
     return *this;
 }
 
-bool Masina::operator==(const Masina& m){
-    if(this->reg_plate != m.reg_plate)
-        return false;
-    return true;
-}
+//bool Masina::operator==(const Masina& m){
+//    if(this->reg_plate != m.reg_plate)
+//        return false;
+//    return true;
+//}
 
 Masina::~Masina(){
 std::cout << "Masina cu numarul de inmatriculare " << reg_plate << " a fost stearsa din aplicatie!\n";
@@ -113,7 +113,7 @@ public:
 
 int Reprezentanta::find_car(Masina &m){                      // returneaza pozitia pe care se afla masina data ca parametru in vectorul de cars din reprezentanta sau -1 daca nu exista masina respectiva in reprezentanta
     for(int i = 0; i < (int)cars.size(); ++ i)
-        if(*cars[i] == m)
+        if(cars[i]->get_reg_plate() == m.get_reg_plate())
             return i;
 
     return -1;
