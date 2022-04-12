@@ -1,11 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <optional>
 
-class Masina;
-class User;
-class Reprezentanta;
-class Admin;
 
 class Masina{
     int fab_year, no_km;
@@ -17,16 +14,16 @@ public:
     Masina(const std::string& reg_plate, const std::string& co, const std::string& model, const std::string& color, const std::string& fuel, int fab_year, int no_km, double hire_price, bool is_hired);
     Masina(const Masina& other);
     Masina& operator=(const Masina& other);
-//    bool operator==(const Masina&);
+    bool operator==(const Masina&) const;
     ~Masina();
-    std::string get_reg_plate(){return reg_plate;}
+    std::string get_reg_plate() const {return reg_plate;}
     friend std::ostream& operator<<(std::ostream& os, const Masina& car);
-    friend class Reprezentanta;
-    double get_price(){return hire_price;}
+    bool get_hire_status() const {return is_hired;}
+    double get_price() const {return hire_price;}
     void set_hire_status(bool status){is_hired = status;}
 };
 
-Masina::Masina(const std::string& reg_plate, const std::string& co, const std::string& model, const std::string& color, const std::string& fuel, int fab_year, int no_km, double hire_price, bool is_hired):
+Masina::Masina(const std::string& reg_plate, const std::string& co, const std::string& model, const std::string& color, const std::string& fuel, int fab_year, int no_km, double hire_price, bool is_hired = false):
         fab_year(fab_year),
         no_km(no_km),
         reg_plate(reg_plate),
@@ -65,14 +62,12 @@ Masina& Masina::operator=(const Masina& other){
     return *this;
 }
 
-//bool Masina::operator==(const Masina& m){
-//    if(this->reg_plate != m.reg_plate)
-//        return false;
-//    return true;
-//}
+bool Masina::operator==(const Masina& m) const{
+    return this->reg_plate == m.reg_plate;
+}
 
 Masina::~Masina(){
-std::cout << "Masina cu numarul de inmatriculare " << reg_plate << " a fost stearsa din aplicatie!\n";
+    std::cout << "Masina cu numarul de inmatriculare " << reg_plate << " a fost stearsa din aplicatie!\n";
 }
 
 std::ostream& operator<<(std::ostream& os, const Masina& car){
@@ -95,49 +90,49 @@ std::ostream& operator<<(std::ostream& os, const Masina& car){
 }
 
 class Reprezentanta{
-    std::vector<Masina*> cars;
+    static int gen_id;
+    std::vector<Masina> cars;
     std::string address;
-    int id, no_cars;
+    int id;
 
 public:
-    int get_id(){return id;}
+    int get_id() const {return id;}
     void delete_car(Masina&);
     void add_car(Masina&);
-    Reprezentanta(const std::vector<Masina*>& , const std::string&, int);
+    Reprezentanta(const std::vector<Masina>& , const std::string&);
     ~Reprezentanta();
     friend std::ostream& operator<<(std::ostream&, const Reprezentanta&);
-    int find_car(Masina&);
-    bool is_index_hired(int pos){return cars[pos]->is_hired;}
-    void set_hire_status_index(int index, bool status) {cars[index]->is_hired = status;};
+    int find_car(const Masina&);
+    bool is_index_hired(int pos){return cars[pos].get_hire_status();}
+    void set_hire_status_index(int index, bool status) {cars[index].set_hire_status(status);};
 };
 
-int Reprezentanta::find_car(Masina &m){                      // returneaza pozitia pe care se afla masina data ca parametru in vectorul de cars din reprezentanta sau -1 daca nu exista masina respectiva in reprezentanta
+int Reprezentanta::gen_id = 0;
+
+int Reprezentanta::find_car(const Masina &m){                      // returneaza pozitia pe care se afla masina data ca parametru in vectorul de cars din reprezentanta sau -1 daca nu exista masina respectiva in reprezentanta
     for(int i = 0; i < (int)cars.size(); ++ i)
-        if(cars[i]->get_reg_plate() == m.get_reg_plate())
+        if(cars[i] == m)
             return i;
 
     return -1;
 }
 
 void Reprezentanta::add_car(Masina& m){
-    cars.push_back(&m);
-    ++ no_cars;
+    cars.push_back(m);
 }
 
 void Reprezentanta::delete_car(Masina& m){
     int pos = this->find_car(m);
     if(pos != -1) {
-        -- no_cars;
         cars.erase(cars.begin() + pos);
-        m.~Masina();
         return;
     }
 
     std::cout << "Masina cu numarul de inmatriculare " << m.get_reg_plate() << " nu este inregistrata la aceasta reprezentanta!\n";
 }
 
-Reprezentanta::Reprezentanta(const std::vector<Masina*>& cars , const std::string& address, int id):
-        cars(cars), address(address), id(id), no_cars((int)cars.size()){
+Reprezentanta::Reprezentanta(const std::vector<Masina>& cars , const std::string& address):
+        cars(cars), address(address), id(++gen_id){
     std::cout << "Reprezentanta cu id-ul " << id << " a fost adaugata in aplicatie.\n";
 }
 
@@ -149,11 +144,11 @@ std::ostream& operator<<(std::ostream& os, const Reprezentanta& rep){
     os  << "========== Reprezentanta ==========\n"
         << "\tId: " << rep.id << '\n'
         << "\tAdresa: " << rep.address << '\n'
-        << "\tNumar de masini: " << rep.no_cars << '\n';
-    if(rep.no_cars) {
+        << "\tNumar de masini: " << rep.cars.size() << '\n';
+    if(!rep.cars.empty()) {
         std::cout << "\nMasinile din reprezentanta:\n\n";
-        for(int i = 0; i < rep.no_cars; ++ i)
-            os << *rep.cars[i] << "\n";
+        for(int i = 0; i < (int)rep.cars.size(); ++ i)
+            os << rep.cars[i] << "\n";
     }
     else
         std::cout << "Reprezentanta nu are masini in momentul de fata.\n";
@@ -166,13 +161,13 @@ class User{
     std::string username, email, pass, b_day, cnp, name;
     int age;
     double bal;
-    Masina* hired_car;
+    std::optional<Masina> hired_car;
 
 
 public:
     void hire(Reprezentanta&, Masina&);
     void unhire();
-    User(const std::string& username, const std::string& email, const std::string& pass, const std::string& b_day, const std::string& cnp, const std::string& name, int age, double bal, Masina* hired_car);
+    User(const std::string& username, const std::string& email, const std::string& pass, const std::string& b_day, const std::string& cnp, const std::string& name, int age, double bal, const std::optional<Masina>&);
     ~User();
     friend std::ostream& operator<<(std::ostream& os, const User& user);
     void load_account(double value){bal += value;}
@@ -186,12 +181,17 @@ void User::unhire(){
 
     hired_car->set_hire_status(false);
     std::cout << "Utilizatorul " << username << " a predat masina " << hired_car->get_reg_plate() << "!\n";
-    hired_car = nullptr;
+    hired_car = std::nullopt;
 }
 
 void User::hire(Reprezentanta& r, Masina& m){
     if(hired_car){
         std::cout << "Un utilizator nu poate inchiria doua masini simultan!\n";
+        return;
+    }
+
+    if(bal < m.get_price()){
+        std::cout << "Utilizatorul nu are bani suficienti pentru a inchiria masina!\n";
         return;
     }
 
@@ -206,19 +206,14 @@ void User::hire(Reprezentanta& r, Masina& m){
         return;
     }
 
-    if(bal < m.get_price()){
-        std::cout << "Utilizatorul nu are bani suficienti pentru a inchiria masina!\n";
-        return;
-    }
-
-    hired_car = &m;
+    hired_car = m;
     bal -= m.get_price();
     r.set_hire_status_index(pos, true);
     std::cout << "Utilizatorul " << username << " a inchiriat masina " << m.get_reg_plate() << " de la reprezentanta " << r.get_id() << "!\n";
 
 }
 
-User::User(const std::string& username, const std::string& email, const std::string& pass, const std::string& b_day, const std::string& cnp, const std::string& name, int age, double bal, Masina* hired_car):
+User::User(const std::string& username, const std::string& email, const std::string& pass, const std::string& b_day, const std::string& cnp, const std::string& name, int age, double bal, const std::optional<Masina>& hired_car = std::nullopt):
         username(username), email(email), pass(pass), b_day(b_day), cnp(cnp), name(name), age(age), bal(bal), hired_car(hired_car){
     std::cout << "A fost creat contul utilizatorului cu username-ul " << username << ".\n";
 }
@@ -231,7 +226,7 @@ std::ostream& operator<<(std::ostream& os, const User& user){
     os  << "========== Utilizator ==========\n"
         << "\tUsername: " << user.username << '\n'
         << "\tEmail: " << user.email << '\n'
-        << "\tParola: " << user.pass << '\n'
+        << "\tParola: " << "[CRYPTED]" << '\n'
         << "\tData nasterii: " << user.b_day << '\n'
         << "\tCNP: " << user.cnp << '\n'
         << "\tNume: " << user.name << '\n'
@@ -247,7 +242,7 @@ std::ostream& operator<<(std::ostream& os, const User& user){
 }
 
 class Admin{
-    Reprezentanta* rep;
+    Reprezentanta rep;
     std::string pass, username, email, nr_telefon;
 
 public:
@@ -261,7 +256,7 @@ Admin::~Admin(){
 }
 
 Admin::Admin(Reprezentanta& rep, const std::string& username, const std::string& email, const std::string& pass, const std::string& nr_telefon):
-        rep(&rep),
+        rep(rep),
         pass(pass),
         username(username),
         email(email),
@@ -273,42 +268,39 @@ std::ostream& operator<<(std::ostream& os, const Admin& admin){
     os  << "========== Admin ==========\n"
         << "\tUsername: " << admin.username << '\n'
         << "\tEmail: " << admin.email << '\n'
-        << "\tParola: " << admin.pass << '\n'
+        << "\tParola: " << "[CRYPTED]" << '\n'
         << "\tNumar de telefon: " << admin.nr_telefon << '\n'
-        << "Reprezentanta: \n\n" << *admin.rep;
+        << "Reprezentanta: \n\n" << admin.rep;
 
     os << "================== End Admin ==================\n";
     return os;
 }
 
 int main() {
-    Masina m1{"PH 10 GDB","Renault", "Megane 4", "rosie", "motorina", 2019, 10000, 199.99, false};
-    Masina m2{"B 456 CPP","Tesla", "Model 3", "cyan", "electrica", 2209, 1560, 399.99, false};
-    Masina m3{"BV 89 HFY","Dacia", "Spring", "alb", "electrica", 2021, 500, 174.99, false};
-    Masina m4{"VL 15 SDG","Toyota", "Corola", "argintie", "hibrid (motorina + electrica)", 2017, 89456, 174.99, false};
-    Masina m5{"PH 34 GHO","VolksWagen", "Arteon", "albastru", "motorina", 2020, 5000, 249.99, false};
-    Masina m6{"TR 67 GGO","VolksWagen", "Arteon", "galben", "benzina", 2018, 10000, 249.99, false};
-    Masina m7{"B 24 FGS","Audi", "A5", "negru", "motorina", 2017, 25641, 299.99, false};
-    Masina m8{"AG 45 DSG","Ford", "Mustang", "portocaliu", "motorina", 2019, 6545, 299.99, false};
-    Masina m9{"IS 10 GDB","Renault", "Captur", "verde", "benzina", 2018, 7849, 250, false};
-    Masina m10{"B 999 VLR","BMW", "Seria 3", "negru", "benzina", 2019, 3415, 350, false};
+    Masina m1{"PH 10 GDB","Renault", "Megane 4", "rosie", "motorina", 2019, 10000, 199.99};
+    Masina m2{"B 456 CPP","Tesla", "Model 3", "cyan", "electrica", 2209, 1560, 399.99};
+    Masina m3{"BV 89 HFY","Dacia", "Spring", "alb", "electrica", 2021, 500, 174.99};
+    Masina m4{"VL 15 SDG","Toyota", "Corola", "argintie", "hibrid (motorina + electrica)", 2017, 89456, 174.99};
+    Masina m5{"PH 34 GHO","VolksWagen", "Arteon", "albastru", "motorina", 2020, 5000, 249.99};
+    Masina m6{"TR 67 GGO","VolksWagen", "Arteon", "galben", "benzina", 2018, 10000, 249.99};
+    Masina m7{"B 24 FGS","Audi", "A5", "negru", "motorina", 2017, 25641, 299.99};
+    Masina m8{"AG 45 DSG","Ford", "Mustang", "portocaliu", "motorina", 2019, 6545, 299.99};
+    Masina m9{"IS 10 GDB","Renault", "Captur", "verde", "benzina", 2018, 7849, 250};
+    Masina m10{"B 999 VLR","BMW", "Seria 3", "negru", "benzina", 2019, 3415, 350};
 
-    Reprezentanta r1{{&m1, &m2, &m3, &m4, &m5}, "Aleea Scolii, nr. 34, Bucuresti", 1};
-    Reprezentanta r2{{&m6, &m10}, "Strada Nalbei, nr. 78, Ploiesti", 2};
-    Reprezentanta r3{{}, "Strada Torcatori, nr. 63, Pitesti", 3};
-    Reprezentanta r4{{&m9, &m7}, "Bulevardul Independentei, nr. 41, Brasov", 4};
+    Reprezentanta r1{{m1, m2, m3, m4, m5}, "Aleea Scolii, nr. 34, Bucuresti"};
+    Reprezentanta r2{{m6, m10}, "Strada Nalbei, nr. 78, Ploiesti"};
+    Reprezentanta r3{{}, "Strada Torcatori, nr. 63, Pitesti"};
+    Reprezentanta r4{{m9, m7}, "Bulevardul Independentei, nr. 41, Brasov"};
 
     Admin a1{r1, "Admin1", "admin1@gmail.com", "admin1*admin_", "0742167985"};
     Admin a2{r2, "Admin2", "admin2@yahoo.com", "admin2__pass", "0794321658"};
     Admin a3{r3, "Admin3", "admin3@hotmail.com", "pass*!example__", "0796541789"};
     Admin a4{r4, "Admin4", "admin4@outlook.com", "asdfPOWEr!!123", "0794569871"};
 
-    User u1{"User1", "user1@gmail.com", "password1", "16-06-2002", "5020616249775", "Popescu Ion Gheorghe", 19, 1456.25,
-            nullptr};
-    User u2{"User2", "user2@gmail.com", "password2", "23-07-1989", "2890723694216", "Sandu Maria Ioana", 32, 699.99,
-            nullptr};
-    User u3{"User3", "user3@gmail.com", "password3", "19-04-2000", "5000419251987", "Ionita Daniel-Andrei", 21, 30.85,
-            nullptr};
+    User u1{"User1", "user1@gmail.com", "password1", "16-06-2002", "5020616249775", "Popescu Ion Gheorghe", 19, 1456.25};
+    User u2{"User2", "user2@gmail.com", "password2", "23-07-1989", "2890723694216", "Sandu Maria Ioana", 32, 699.99};
+    User u3{"User3", "user3@gmail.com", "password3", "19-04-2000", "5000419251987", "Ionita Daniel-Andrei", 21, 30.85};
 
     std::cout << r1 << "\n\n" << r3 << '\n';
     std::cout << u1 << '\n' << u2 << '\n' << u3 << '\n';
