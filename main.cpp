@@ -97,7 +97,7 @@ class Reprezentanta{
 
 public:
     int get_id() const {return id;}
-    void delete_car(Masina&);
+    void delete_car(const Masina&);
     void add_car(Masina&);
     Reprezentanta(const std::vector<Masina>& , const std::string&);
     ~Reprezentanta();
@@ -121,7 +121,7 @@ void Reprezentanta::add_car(Masina& m){
     cars.push_back(m);
 }
 
-void Reprezentanta::delete_car(Masina& m){
+void Reprezentanta::delete_car(const Masina& m){
     int pos = this->find_car(m);
     if(pos != -1) {
         cars.erase(cars.begin() + pos);
@@ -165,7 +165,7 @@ class User{
 
 
 public:
-    void hire(Reprezentanta&, Masina&);
+    void hire(Reprezentanta&, const Masina&);
     void unhire();
     User(const std::string& username, const std::string& email, const std::string& pass, const std::string& b_day, const std::string& cnp, const std::string& name, int age, double bal, const std::optional<Masina>&);
     ~User();
@@ -184,32 +184,32 @@ void User::unhire(){
     hired_car = std::nullopt;
 }
 
-void User::hire(Reprezentanta& r, Masina& m){
+void User::hire(Reprezentanta& r, const Masina& m){
     if(hired_car){
-        std::cout << "Un utilizator nu poate inchiria doua masini simultan!\n";
+        std::cout << "Utilizatorul " << this->username << " nu poate inchiria doua masini simultan!\n";
         return;
     }
 
     if(bal < m.get_price()){
-        std::cout << "Utilizatorul nu are bani suficienti pentru a inchiria masina!\n";
+        std::cout << "Utilizatorul " << this->username << " nu are bani suficienti pentru a inchiria masina!\n";
         return;
     }
 
     int pos = r.find_car(m);
     if(pos == -1){
-        std::cout << "Masina nu se afla la aceasta reprezentanta!\n";
+        std::cout << "Masina cu numarul de inmatriculare " << m.get_reg_plate() <<" nu se afla la aceasta reprezentanta!\n";
         return;
     }
 
     if(r.is_index_hired(pos)){
-        std::cout << "Masina este deja inchiriata!\n";
+        std::cout << "Masina cu numarul de inmatriculare " << m.get_reg_plate() << " este deja inchiriata!\n";
         return;
     }
 
     hired_car = m;
     bal -= m.get_price();
     r.set_hire_status_index(pos, true);
-    std::cout << "Utilizatorul " << username << " a inchiriat masina " << m.get_reg_plate() << " de la reprezentanta " << r.get_id() << "!\n";
+    std::cout << "Utilizatorul " << this->username << " a inchiriat masina " << m.get_reg_plate() << " de la reprezentanta " << r.get_id() << "!\n";
 
 }
 
