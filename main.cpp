@@ -89,7 +89,7 @@ int main() {
         std::cout << "Conversia a reusit!\n";
         tempUser2.say_something();
     }
-    catch(std::bad_cast& err) {
+    catch(std::bad_cast&) {
         std::cout << "Eroare... Conversia nu a reusit!\n";
     }
 
@@ -98,7 +98,7 @@ int main() {
         std::cout << "Conversia a reusit!\n";
         tempUser2.say_something();
     }
-    catch(std::bad_cast& err) {
+    catch(std::bad_cast&) {
         std::cout << "Eroare... Conversia nu a reusit!\n";
     }
 

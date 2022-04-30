@@ -13,10 +13,10 @@ BasicUser::BasicUser(const std::string &username, const std::string &email, cons
                      bal(bal)
                      {}
 
-BasicUser::BasicUser(const BasicUser& other):User(other), bal(other.bal)
-{
-    car = other.car->clone();
-}
+BasicUser::BasicUser(const BasicUser& other):
+        User(other),
+        car(other.car->clone()),
+        bal(other.bal){}
 
 BasicUser& BasicUser::operator=(const BasicUser& other) {
     auto copy{other};

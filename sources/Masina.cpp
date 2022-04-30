@@ -64,7 +64,7 @@ std::ostream& operator<<(std::ostream& os, const Masina& car){
     return os;
 }
 
-Masina::~Masina() {};
+Masina::~Masina() {}
 
 void Masina::charge(const double& qtty) {
     if(qtty < 0)
