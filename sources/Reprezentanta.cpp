@@ -3,41 +3,50 @@
 //
 
 #include "../headers/Reprezentanta.h"
+#include "../headers/not_found.h"
 #include <iostream>
 #include <vector>
 
 
 int Reprezentanta::gen_id = 0;
 
-int Reprezentanta::find_car(const Masina &m) const {                      // returneaza pozitia pe care se afla masina data ca parametru in vectorul de cars din reprezentanta sau -1 daca nu exista masina respectiva in reprezentanta
+Reprezentanta::Reprezentanta(const std::vector<std::shared_ptr<Masina>>& cars , const std::string& address):
+        cars(cars),
+        address(address),
+        id(++gen_id)
+        {}
+
+Reprezentanta::Reprezentanta(const Reprezentanta& other):
+    address(other.address),
+    id(other.id)
+    {
+        for(const auto& car : other.cars)
+            cars.push_back(car->clone());
+    }
+
+int Reprezentanta::find_car(const std::shared_ptr<Masina>& m) const {
     for(int i = 0; i < (int)cars.size(); ++ i)
-        if(cars[i] == m)
+        if(*cars[i] == *m)
             return i;
 
-    return -1;
+    throw not_found();
 }
 
-void Reprezentanta::add_car(const Masina& m){
+void Reprezentanta::add_car(const std::shared_ptr<Masina>& m){
     cars.push_back(m);
 }
 
-void Reprezentanta::delete_car(const Masina& m){
+const std::shared_ptr<Masina>&  Reprezentanta::delete_car(const std::shared_ptr<Masina>& m){
     int pos = this->find_car(m);
-    if(pos != -1) {
-        cars.erase(cars.begin() + pos);
-        return;
-    }
-
-    std::cout << "Masina cu numarul de inmatriculare " << m.get_reg_plate() << " nu este inregistrata la aceasta reprezentanta!\n";
+    cars.erase(cars.begin() + pos);
+    return m;
 }
 
-Reprezentanta::Reprezentanta(const std::vector<Masina>& cars , const std::string& address):
-        cars(cars), address(address), id(++gen_id){
-    std::cout << "Reprezentanta cu id-ul " << id << " a fost adaugata in aplicatie.\n";
-}
-
-Reprezentanta::~Reprezentanta(){
-    std::cout << "Reprezentanta cu id-ul " << id << " a fost stearsa din aplicatie!\n";
+void swap(Reprezentanta& r1, Reprezentanta& r2) {
+    using std::swap;
+    swap(r1.id, r2.id);
+    swap(r1.address, r2.address);
+    swap(r1.cars, r2.cars);
 }
 
 std::ostream& operator<<(std::ostream& os, const Reprezentanta& rep){
@@ -46,13 +55,20 @@ std::ostream& operator<<(std::ostream& os, const Reprezentanta& rep){
         << "\tAdresa: " << rep.address << '\n'
         << "\tNumar de masini: " << rep.cars.size() << '\n';
     if(!rep.cars.empty()) {
-        std::cout << "\nMasinile din reprezentanta:\n\n";
-        for(int i = 0; i < (int)rep.cars.size(); ++ i)
-            os << rep.cars[i] << "\n";
+        std::cout << "\tMasinile din reprezentanta:";
+        for(int i = 0; i < (int)rep.cars.size(); ++ i) {
+            std::cout << "\n\t\t> " << rep.cars[i]->get_reg_plate();
+        }
     }
     else
-        std::cout << "Reprezentanta nu are masini in momentul de fata.\n";
+        std::cout << "\nReprezentanta nu are masini in momentul de fata.";
 
-    os << "================== End Reprezentanta ==================\n";
+    os << "\n================== End Reprezentanta ==================\n";
     return os;
+}
+
+Reprezentanta& Reprezentanta::operator=(const Reprezentanta &other) {
+    auto copy{other};
+    swap(copy, *this);
+    return *this;
 }

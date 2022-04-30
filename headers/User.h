@@ -4,24 +4,35 @@
 
 #ifndef MAIN_CPP_USER_H
 #define MAIN_CPP_USER_H
-#include <optional>
+#include <unordered_set>
 #include "Masina.h"
 #include "Reprezentanta.h"
 
 class User{
-    std::string username, email, pass, b_day, cnp, name;
+protected:
+    static std::unordered_set<std::string> uNames;
+    std::string username, email, pass, b_day, cnp, name, phone;
     int age;
-    double bal;
-    std::optional<Masina> hired_car;
 
 
 public:
-    void hire(Reprezentanta&, const Masina&);
-    void unhire();
-    User(const std::string& username, const std::string& email, const std::string& pass, const std::string& b_day, const std::string& cnp, const std::string& name, const int& age, const double& bal, const std::optional<Masina>& = std::nullopt);
-    ~User();
+    User(const std::string& username, const std::string& email,
+         const std::string& pass, const std::string& b_day,
+         const std::string& cnp, const std::string& name,
+         const std::string& phone, const int& age);
+
+    virtual ~User() = 0;
+
     friend std::ostream& operator<<(std::ostream& os, const User& user);
-    void load_account(const double& value){bal += value;}
+
+    [[nodiscard]] int getAge() const {return this->age;}
+
+    static void addUsername(const std::string&);
+
+    [[nodiscard]] virtual std::shared_ptr<User> clone() const = 0;
+
+    void say_something() const;
+
 };
 
 
