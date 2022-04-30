@@ -46,10 +46,6 @@ std::ostream& operator<<(std::ostream& os, const Electrica& car){
     return os;
 }
 
-void Electrica::afis() {
-    std::cout << *this;
-}
-
 [[maybe_unused]] void Electrica::honk() const {
     std::cout << "Honk Electrica\n";
 }

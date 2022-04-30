@@ -27,8 +27,6 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Electrica& car);
 
-    void afis() override;
-
     [[maybe_unused]] void honk() const;
 
     [[nodiscard]] std::shared_ptr<Masina> clone() const override {

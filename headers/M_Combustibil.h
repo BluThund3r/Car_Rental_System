@@ -29,8 +29,6 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const M_Combustibil& car);
 
-    void afis() override;
-
     [[nodiscard]] std::shared_ptr<Masina> clone() const override {
         return std::make_shared<M_Combustibil>(*this);
     }

@@ -40,8 +40,6 @@ public:
 
     virtual void charge(const double& power);
 
-    virtual void afis() = 0;
-
     [[nodiscard]] virtual std::shared_ptr<Masina> clone() const = 0;
 
     [[maybe_unused]] void honk() const;

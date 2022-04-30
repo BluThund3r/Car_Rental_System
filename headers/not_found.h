@@ -7,7 +7,7 @@
 
 #include <exception>
 
-class not_found: std::exception {
+class not_found: public std::exception {
 public:
     [[nodiscard]] const char* what() const noexcept override {
         return "Masina cautata nu se afla la aceasta reprezentanta";

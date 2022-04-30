@@ -57,10 +57,6 @@ std::ostream& operator<<(std::ostream& os, const M_Combustibil& car){
     return os;
 }
 
-void M_Combustibil:: afis() {
-    std::cout << *this;
-}
-
 void M_Combustibil::honk() const {
     std::cout << "Honk M_Combustibil\n";
 }

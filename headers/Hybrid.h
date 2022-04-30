@@ -17,8 +17,6 @@ public:
 
     Hybrid(const Hybrid&);
 
-    void afis() override;
-
     void charge(const double&) override;
 
     [[nodiscard]] std::shared_ptr<Masina> clone() const override {

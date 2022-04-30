@@ -30,10 +30,6 @@ void Hybrid::charge(const double &qtty) {
     std::cout << "Ati alimentat masina " << this->reg_plate << " pana la " << this->tank_lvl << " litri\n";
 }
 
-void Hybrid::afis() {
-    std::cout << *this;
-}
-
 std::ostream &operator<<(std::ostream &os, const Hybrid &car) {
     os  << "========== Masina ==========\n"
         << "\tNumarul de inmatriculare: " << car.reg_plate <<'\n'
