@@ -29,25 +29,29 @@ void Electrica::charge(const double& power){
 }
 
 std::ostream& operator<<(std::ostream& os, const Electrica& car){
-    os  << "========== Masina ==========\n"
-        << "\tNumarul de inmatriculare: " << car.reg_plate <<'\n'
-        << "\tMarca: " << car.co << '\n'
-        << "\tModelul: " << car.model << '\n'
-        << "\tCuloarea: " << car.color << '\n'
-        << "\tMASINA ELECTRICA\n"
-        << "\tAnul fabricatiei: " << car.fab_year << '\n'
-        << "\tNumarul de kilometri parcursi: " << car.no_km << '\n';
-    os  << "\tCapacitate baterie: " << car.bat_capacity << " Watts\n"
-        << "\tNivel baterie: " << car.bat_lvl << "%\n"
-        << "\tPretul de inchiriere: " << car.hire_price << " RON / zi\n"
-        << "\tDisponibilitate: " << ((car.is_hired)? "Indisponibila momentan\n" : "Disponibila\n");
-
-    os << "================== End Masina ==================\n";
+    car.afis(os);
     return os;
 }
 
 [[maybe_unused]] void Electrica::honk() const {
     std::cout << "Honk Electrica\n";
+}
+
+void Electrica::afis(std::ostream& os) const {
+    os  << "========== Masina ==========\n"
+        << "\tNumarul de inmatriculare: " << reg_plate <<'\n'
+        << "\tMarca: " << co << '\n'
+        << "\tModelul: " << model << '\n'
+        << "\tCuloarea: " << color << '\n'
+        << "\tMASINA ELECTRICA\n"
+        << "\tAnul fabricatiei: " << fab_year << '\n'
+        << "\tNumarul de kilometri parcursi: " << no_km << '\n';
+    os  << "\tCapacitate baterie: " << bat_capacity << " Watts\n"
+        << "\tNivel baterie: " << bat_lvl << "%\n"
+        << "\tPretul de inchiriere: " << hire_price << " RON / zi\n"
+        << "\tDisponibilitate: " << ((is_hired)? "Indisponibila momentan\n" : "Disponibila\n");
+
+    os << "================== End Masina ==================\n";
 }
 
 

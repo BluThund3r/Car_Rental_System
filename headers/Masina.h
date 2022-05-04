@@ -10,6 +10,8 @@
 #include <memory>
 
 class Masina{
+    //adds the reg_plate to the regPlates set or throws an error if already added
+    void addRegPlate();
 protected:
     static std::unordered_set<std::string> regPlates;
     std::string reg_plate, co, model, color;
@@ -44,8 +46,9 @@ public:
 
     [[maybe_unused]] void honk() const;
 
-    //adds the reg_plate to the regPlates set or throws an error if already added
-    static void addRegPlate(const std::string& reg_plate);
+    virtual void afis(std::ostream&) const = 0;
+
+
 };
 
 #endif //MAIN_CPP_MASINA_H

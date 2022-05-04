@@ -19,7 +19,7 @@ Masina::Masina(const std::string& reg_plate, const std::string& co, const std::s
         hire_price(hire_price),
         is_hired(is_hired)
 {
-    addRegPlate(reg_plate);
+    addRegPlate();
 }
 
 Masina::Masina(const Masina& other):
@@ -50,17 +50,7 @@ bool Masina::operator==(const Masina& m) const{
 }
 
 std::ostream& operator<<(std::ostream& os, const Masina& car){
-    os  << "========== Masina ==========\n"
-        << "\tNumarul de inmatriculare: " << car.reg_plate <<'\n'
-        << "\tMarca: " << car.co << '\n'
-        << "\tModelul: " << car.model << '\n'
-        << "\tCuloarea: " << car.color << '\n'
-        << "\tAnul fabricatiei: " << car.fab_year << '\n'
-        << "\tNumarul de kilometri parcursi: " << car.no_km << '\n';
-    os  << "\tPretul de inchiriere: " << car.hire_price << " RON / zi\n"
-        << "\tDisponibilitate: " << ((car.is_hired)? "Indisponibila momentan\n" : "Disponibila\n");
-
-    os << "================== End Masina ==================\n";
+    car.afis(os);
     return os;
 }
 
@@ -75,8 +65,22 @@ void Masina::charge(const double& qtty) {
 
 void Masina::honk() const {std::cout << "Honk Masina\n";}
 
-void Masina::addRegPlate(const std::string &reg_plate) {
+void Masina::addRegPlate() {
     if(regPlates.find(reg_plate) != regPlates.end())
         throw not_unique_car();
     regPlates.insert(reg_plate);
+}
+
+void Masina::afis(std::ostream& os) const {
+    os  << "========== Masina ==========\n"
+        << "\tNumarul de inmatriculare: " << reg_plate <<'\n'
+        << "\tMarca: " << co << '\n'
+        << "\tModelul: " << model << '\n'
+        << "\tCuloarea: " << color << '\n'
+        << "\tAnul fabricatiei: " << fab_year << '\n'
+        << "\tNumarul de kilometri parcursi: " << no_km << '\n';
+    os  << "\tPretul de inchiriere: " << hire_price << " RON / zi\n"
+        << "\tDisponibilitate: " << ((is_hired)? "Indisponibila momentan\n" : "Disponibila\n");
+
+    os << "================== End Masina ==================\n";
 }

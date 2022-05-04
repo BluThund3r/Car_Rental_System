@@ -32,6 +32,8 @@ public:
     [[nodiscard]] std::shared_ptr<Masina> clone() const override {
         return std::make_shared<Electrica>(*this);
     }
+
+    void afis(std::ostream&) const override;
 };
 
 

@@ -34,29 +34,33 @@ void M_Combustibil::charge(const double& qtty){
 
 
 std::ostream& operator<<(std::ostream& os, const M_Combustibil& car){
-    os  << "========== Masina ==========\n"
-        << "\tNumarul de inmatriculare: " << car.reg_plate <<'\n'
-        << "\tMarca: " << car.co << '\n'
-        << "\tModelul: " << car.model << '\n'
-        << "\tCuloarea: " << car.color << '\n'
-        << "\tMASINA PE COMBUSTIBIL\n"
-        << "\tTipul combustibilului: ";
-    switch(car.ftype) {
-            case 0 : {std::cout << "Benzina\n"; break;}
-            case 1 : {std::cout << "Motorina\n"; break;}
-            case 2 : {std::cout << "GPL\n"; break;}
-    }
-    os  << "\tAnul fabricatiei: " << car.fab_year << '\n'
-        << "\tNumarul de kilometri parcursi: " << car.no_km << '\n';
-    os  << "\tPretul de inchiriere: " << car.hire_price << " RON / zi\n"
-        << "\tCapacitate rezervor: " << car.tank_cap << " Litri\n"
-        << "\tNivel combustibil: " << car.tank_lvl << " Litri\n"
-        << "\tDisponibilitate: " << ((car.is_hired)? "Indisponibila momentan\n" : "Disponibila\n");
-
-    os << "================== End Masina ==================\n";
+    car.afis(os);
     return os;
 }
 
 void M_Combustibil::honk() const {
     std::cout << "Honk M_Combustibil\n";
+}
+
+void M_Combustibil::afis(std::ostream &os) const {
+    os  << "========== Masina ==========\n"
+        << "\tNumarul de inmatriculare: " << reg_plate <<'\n'
+        << "\tMarca: " << co << '\n'
+        << "\tModelul: " << model << '\n'
+        << "\tCuloarea: " << color << '\n'
+        << "\tMASINA PE COMBUSTIBIL\n"
+        << "\tTipul combustibilului: ";
+    switch(ftype) {
+            case 0 : {std::cout << "Benzina\n"; break;}
+            case 1 : {std::cout << "Motorina\n"; break;}
+            case 2 : {std::cout << "GPL\n"; break;}
+    }
+    os  << "\tAnul fabricatiei: " << fab_year << '\n'
+        << "\tNumarul de kilometri parcursi: " << no_km << '\n';
+    os  << "\tPretul de inchiriere: " << hire_price << " RON / zi\n"
+        << "\tCapacitate rezervor: " << tank_cap << " Litri\n"
+        << "\tNivel combustibil: " << tank_lvl << " Litri\n"
+        << "\tDisponibilitate: " << ((is_hired)? "Indisponibila momentan\n" : "Disponibila\n");
+
+    os << "================== End Masina ==================\n";
 }

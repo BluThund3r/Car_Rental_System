@@ -9,15 +9,16 @@
 #include "Reprezentanta.h"
 
 class User{
+    void addUsername();
+
 protected:
     static std::unordered_set<std::string> uNames;
-    std::string username, email, pass, b_day, cnp, name, phone;
+    std::string username, email, b_day, cnp, name, phone;
     int age;
 
 
 public:
-    User(const std::string& username, const std::string& email,
-         const std::string& pass, const std::string& b_day,
+    User(const std::string& username, const std::string& email, const std::string& b_day,
          const std::string& cnp, const std::string& name,
          const std::string& phone, const int& age);
 
@@ -27,11 +28,11 @@ public:
 
     [[nodiscard]] int getAge() const {return this->age;}
 
-    static void addUsername(const std::string&);
-
     [[nodiscard]] virtual std::shared_ptr<User> clone() const = 0;
 
     void say_something() const;
+
+    virtual void afis(std::ostream& os) const = 0;
 
 };
 

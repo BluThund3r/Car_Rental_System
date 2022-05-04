@@ -12,7 +12,7 @@ class BasicUser: public User {
     std::shared_ptr<Masina> car;
     double bal;
 public:
-    BasicUser(const std::string &username, const std::string &email, const std::string &pass, const std::string &bDay,
+    BasicUser(const std::string &username, const std::string &email, const std::string &bDay,
               const std::string &cnp, const std::string &name, const std::string &phone, const int &age,
               const double& bal = 0, const std::shared_ptr<Masina> &car = nullptr);
     ~BasicUser() override = default;
@@ -36,6 +36,8 @@ public:
     friend std::ostream& operator<<(std::ostream&, const BasicUser&);
 
     void say_something() const;
+
+    void afis(std::ostream& os) const override;
 };
 
 

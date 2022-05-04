@@ -34,6 +34,8 @@ public:
     }
 
     void honk() const;
+
+    void afis(std::ostream&) const override;
 };
 
 

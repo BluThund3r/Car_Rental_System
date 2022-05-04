@@ -31,28 +31,7 @@ void Hybrid::charge(const double &qtty) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Hybrid &car) {
-    os  << "========== Masina ==========\n"
-        << "\tNumarul de inmatriculare: " << car.reg_plate <<'\n'
-        << "\tMarca: " << car.co << '\n'
-        << "\tModelul: " << car.model << '\n'
-        << "\tCuloarea: " << car.color << '\n'
-        << "\tMASINA HYBRID\n"
-        << "\tTipul combustibilului: ";
-    switch(car.ftype) {
-            case 0 : {std::cout << "Benzina\n"; break;}
-            case 1 : {std::cout << "Motorina\n"; break;}
-            case 2 : {std::cout << "GPL\n"; break;}
-    }
-    os  << "\tAnul fabricatiei: " << car.fab_year << '\n'
-        << "\tNumarul de kilometri parcursi: " << car.no_km << '\n';
-    os  << "\tCapacitate rezervor: " << car.tank_cap << " Litri\n"
-        << "\tNivel combustibil: " << car.tank_lvl << " Litri\n"
-        << "\tCapacitate baterie: " << car.bat_capacity << " Watts\n"
-        << "\tNivel baterie: " << car.bat_lvl << "%\n"
-        << "\tPretul de inchiriere: " << car.hire_price << " RON / zi\n"
-        << "\tDisponibilitate: " << ((car.is_hired)? "Indisponibila momentan\n" : "Disponibila\n");
-
-    os << "================== End Masina ==================\n";
+    car.afis(os);
     return os;
 }
 
@@ -81,4 +60,29 @@ void swap(Hybrid& h1, Hybrid& h2) {
 
 void Hybrid::honk() const {
     std::cout << "Honk Hybrid\n";
+}
+
+void Hybrid::afis(std::ostream &os) const {
+     os  << "========== Masina ==========\n"
+        << "\tNumarul de inmatriculare: " << reg_plate <<'\n'
+        << "\tMarca: " << co << '\n'
+        << "\tModelul: " << model << '\n'
+        << "\tCuloarea: " << color << '\n'
+        << "\tMASINA HYBRID\n"
+        << "\tTipul combustibilului: ";
+    switch(ftype) {
+            case 0 : {os << "Benzina\n"; break;}
+            case 1 : {os << "Motorina\n"; break;}
+            case 2 : {os << "GPL\n"; break;}
+    }
+    os  << "\tAnul fabricatiei: " << fab_year << '\n'
+        << "\tNumarul de kilometri parcursi: " << no_km << '\n';
+    os  << "\tCapacitate rezervor: " << tank_cap << " Litri\n"
+        << "\tNivel combustibil: " << tank_lvl << " Litri\n"
+        << "\tCapacitate baterie: " << bat_capacity << " Watts\n"
+        << "\tNivel baterie: " << bat_lvl << "%\n"
+        << "\tPretul de inchiriere: " << hire_price << " RON / zi\n"
+        << "\tDisponibilitate: " << ((is_hired)? "Indisponibila momentan\n" : "Disponibila\n");
+
+    os << "================== End Masina ==================\n";
 }

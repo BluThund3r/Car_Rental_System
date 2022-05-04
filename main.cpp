@@ -55,7 +55,6 @@ int main() {
     r4.add_car(m9);
     r4.add_car(m10);
 
-
     Masina *tempMasina = new Hybrid{"DJ 10 APB", "VolksWagen", "Arteon", "galben", 2018, 10000, 249.99, 10000, M_Combustibil::benzina, 65};
     tempMasina->honk();
     if(auto* tempMasina2 = dynamic_cast<Electrica *>(tempMasina)) {
@@ -81,44 +80,33 @@ int main() {
 
     delete tempMasina;
 
-    BasicUser u3{"User3", "user2@gmail.com", "password3", "19-04-2000", "5000419251987", "Ionita Daniel-Andrei", "0715679451", 22, 30.85};
+    BasicUser u3{"User3", "user2@gmail.com", "19-04-2000", "5000419251987", "Ionita Daniel-Andrei", "0715679451", 22, 30.85};
     [[maybe_unused]] User& tempUser = u3;
 
     try {
         auto& tempUser2 = dynamic_cast<BasicUser&>(u3);
         std::cout << "Conversia a reusit!\n";
         tempUser2.say_something();
-    }
-    catch(std::bad_cast&) {
-        std::cout << "Eroare... Conversia nu a reusit!\n";
-    }
 
-    try {
-        auto& tempUser2 = dynamic_cast<Admin&>(u3);
+        auto& tempUser3 = dynamic_cast<Admin&>(u3);
         std::cout << "Conversia a reusit!\n";
-        tempUser2.say_something();
+        tempUser3.say_something();
     }
     catch(std::bad_cast&) {
         std::cout << "Eroare... Conversia nu a reusit!\n";
     }
 
-    Admin a1{"Admin1", "admin1@gmail.com", "admin1*admin_", "16-06-1990", "5054654164894", "Popescu Marinescu", "0716485134", 31, r1};
-    Admin a2{"Admin2", "admin2@yahoo.com", "admin2__pass", "25-09-2000", "6456154948431", "Ionescu Cristina", "0794321658", 21, r2};
-    Admin a3{"Admin3", "admin3@hotmail.com", "pass*!example__", "13-03-1989", "1467894516486", "Stanciu Stan","0796541789", 33,r3};
-    Admin a4{"Admin4", "admin4@outlook.com", "asdfPOWEr!!123", "04-01-1987", "1894632158492", "Olteanu Mihai","0794569871", 35,r4};
+    Admin a1{"Admin1", "admin1@gmail.com", "16-06-1990", "5054654164894", "Popescu Marinescu", "0716485134", 31, r1};
+    Admin a2{"Admin2", "admin2@yahoo.com", "25-09-2000", "6456154948431", "Ionescu Cristina", "0794321658", 21, r2};
+    Admin a3{"Admin3", "admin3@hotmail.com", "13-03-1989", "1467894516486", "Stanciu Stan","0796541789", 33,r3};
+    Admin a4{"Admin4", "admin4@outlook.com", "04-01-1987", "1894632158492", "Olteanu Mihai","0794569871", 35,r4};
 
-    BasicUser u1{"User1", "user1@gmail.com", "password2", "23-07-1989", "2890723694216", "Sandu Maria Ioana", "0745164861", 32, 699.99};
-    BasicUser u2{"User2", "user2@gmail.com", "password3", "19-04-2000", "5000419251987", "Ionita Daniel-Andrei", "0715679451", 22, 30.85};
-
-    try {
-        BasicUser u4{"User1", "user4@gmail.com", "password4", "19-04-2000", "5000419251987", "Ionita Daniel-Andrei", "0715679451", 22, 30.85};
-    }
-    catch(not_unique_user& err) {
-        std::cout << err.what() << '\n';
-    }
+    BasicUser u1{"User1", "user1@gmail.com", "23-07-1989", "2890723694216", "Sandu Maria Ioana", "0745164861", 32, 699.99};
+    BasicUser u2{"User2", "user2@gmail.com", "19-04-2000", "5000419251987", "Ionita Daniel-Andrei", "0715679451", 22, 30.85};
 
     try {
-        Admin a5{"Admin3", "admin5@hotmail.com", "pass*!example__", "13-03-1989", "1467894516486", "Stanciu Stan","0796541789", 33,r3};
+        BasicUser u4{"User1", "user4@gmail.com", "19-04-2000", "5000419251987", "Ionita Daniel-Andrei", "0715679451", 22, 30.85};
+        Admin a5{"Admin3", "admin5@hotmail.com", "13-03-1989", "1467894516486", "Stanciu Stan","0796541789", 33,r3};
     }
     catch(not_unique_user& err) {
         std::cout << err.what() << '\n';
@@ -128,37 +116,18 @@ int main() {
     std::cout << u1 << '\n' << u2 << '\n';
 
     try {
-        m1->charge(-100);
+        m1->charge(100000);
+        m6->charge(100000);
+        m3->charge(-100);
     }
     catch(negative_qtty& err){
         std::cout << err.what() << "\nVa rugam incercati din nou, cu o cantitate pozitiva\n";
     }
 
-    m1->charge(100000);
-    m6->charge(100000);
-
     try {
         u1.hire(r1, m6);
-    }
-    catch(not_found& err) {
-        std::cout << err.what() << '\n';
-    }
-
-    try {
         u1.hire(r1, m2);
-    }
-    catch(not_found& err) {
-        std::cout << err.what() << '\n';
-    }
-
-    try {
-       u2.hire(r2, m6);
-    }
-    catch(not_found& err) {
-        std::cout << err.what() << '\n';
-    }
-
-    try {
+        u2.hire(r2, m6);
         u2.hire(r3, m8);
         u2.load_account(10000);
         u2.hire(r3, m8);
