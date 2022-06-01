@@ -24,72 +24,72 @@ template <typename T>
 T Max(const std::vector<T>& v) {
     if(v.empty())
         throw empty_exception();
-    T Max = v[0];
+    T max = v[0];
     for(auto& val : v)
-        if(val > Max)
-            Max = val;
+        if(val > max)
+            max = val;
 
-    return Max;
+    return max;
 }
 
 template <>
 std::shared_ptr<Masina> Max(const std::vector<std::shared_ptr<Masina>>& v) {
     if(v.empty())
         throw empty_exception();
-    auto Max = v[0];
+    auto max = v[0];
     for(auto& m : v)
-        if(m->get_price() > Max->get_price())
-            Max = m;
+        if(m->get_price() > max->get_price())
+            max = m;
 
-    return Max;
+    return max;
 }
 
 template <>
 Reprezentanta Max(const std::vector<Reprezentanta>& v) {
     if(v.empty())
         throw empty_exception();
-    auto Max = v[0];
+    auto max = v[0];
     for(auto& m : v)
-        if(m.getNoCars() > Max.getNoCars())
-            Max = m;
+        if(m.getNoCars() > max.getNoCars())
+            max = m;
 
-    return Max;
+    return max;
 }
 
 template <typename T>
 T Min(const std::vector<T>& v) {
     if(v.empty())
         throw empty_exception();
-    T Min = v[0];
+    T min = v[0];
     for(auto& val : v)
-        if(val < Max)
-            Max = val;
+        if(val < min)
+            min = val;
 
-    return Max;
+    return min;
 }
 
 template <>
 std::shared_ptr<Masina> Min(const std::vector<std::shared_ptr<Masina>>& v) {
     if(v.empty())
         throw empty_exception();
-    auto Max = v[0];
+    auto min = v[0];
     for(auto& m : v)
-        if(m->get_price() < Max->get_price())
-            Max = m;
+        if(m->get_price() < min->get_price())
+            min = m;
 
-    return Max;
+    return min;
 }
 
 template <>
 Reprezentanta Min(const std::vector<Reprezentanta>& v) {
     if(v.empty())
         throw empty_exception();
-    auto Max = v[0];
+    auto min = v[0];
     for(auto& m : v)
-        if(m.getNoCars() < Max.getNoCars())
-            Max = m;
+        if(m.getNoCars() < min.getNoCars())
+            min = m;
 
-    return Max;
+    return min;
 }
 
 int main() {

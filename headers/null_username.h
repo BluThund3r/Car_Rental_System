@@ -7,7 +7,7 @@
 
 #include <exception>
 
-class null_username: std::exception {
+class null_username: public std::exception {
 public:
      [[nodiscard]] const char* what() const noexcept override {
         return "Username-ul nu poate fi null";
