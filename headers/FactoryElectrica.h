@@ -17,6 +17,7 @@ public:
     std::shared_ptr<Masina> createBMW() override;
     std::shared_ptr<Masina> createRenault() override;
     std::shared_ptr<Masina> createAudi() override;
+    ~FactoryElectrica() override = default;
 };
 
 

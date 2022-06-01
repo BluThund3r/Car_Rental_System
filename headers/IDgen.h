@@ -29,7 +29,7 @@ template <>
 class IDgen<Masina> {
 public:
     std::string generate() {
-        srand(time(NULL));
+        srand((unsigned int) time(NULL));
         std::string regPlate;
         const std::vector<std::string> judete = {"AB", "AR", "AG", "BC", "BH", "BN", "BT", "BV", "BR", "B", "BZ", "CS",
                                                  "CL", "CJ", "CT", "CV", "DB", "DJ", "GL", "GR", "GJ", "HR", "HD", "IL",

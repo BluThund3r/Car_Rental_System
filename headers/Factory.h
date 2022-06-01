@@ -20,7 +20,7 @@ public:
     virtual std::shared_ptr<Masina> createBMW() = 0;
     virtual std::shared_ptr<Masina> createRenault() = 0;
     virtual std::shared_ptr<Masina> createAudi() = 0;
+    virtual ~Factory() = default;
 };
-
 
 #endif //MAIN_CPP_FACTORY_H
