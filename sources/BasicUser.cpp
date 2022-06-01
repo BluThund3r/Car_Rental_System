@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "../headers/BasicUser.h"
+#include "../headers/user_not_has_car.h"
 
 BasicUser::BasicUser(const std::string &username, const std::string &email,
                      const std::string &bDay, const std::string &cnp, const std::string &name, const std::string &phone,
@@ -15,27 +16,21 @@ BasicUser::BasicUser(const std::string &username, const std::string &email,
 
 BasicUser::BasicUser(const BasicUser& other):
         User(other),
-        car(other.car->clone()),
+        car(other.car),
         bal(other.bal){}
 
-//BasicUser& BasicUser::operator=(const BasicUser& other) {
-//    auto copy{other};
-//    swap(copy, *this);
-//    return *this;
-//}
-//
-//void swap(BasicUser& u1, BasicUser& u2) {
-//    using std::swap;
-//    swap(u1.username, u2.username);
-//    swap(u1.name, u2.name);
-//    swap(u1.email, u2.email);
-//    swap(u1.b_day, u2.b_day);
-//    swap(u1.cnp, u2.cnp);
-//    swap(u1.phone, u2.phone);
-//    swap(u1.age, u2.age);
-//    swap(u1.bal, u2.bal);
-//    swap(u1.car, u2.car);
-//}
+BasicUser& BasicUser::operator=(const BasicUser& other) {
+    auto copy{other};
+    swap(copy, *this);
+    return *this;
+}
+
+void swap(BasicUser& u1, BasicUser& u2) {
+    swap((User&)u1, (User&)u2);
+    using std::swap;
+    swap(u1.bal, u2.bal);
+    swap(u1.car, u2.car);
+}
 
 void BasicUser::unhire(){
     if(!car){
@@ -98,4 +93,16 @@ void BasicUser::afis(std::ostream &os) const {
          os << "\tUtilizatorul are inchiriata masina: " << car->get_reg_plate() << '\n';
 
      os << "================== End Basic User ==================\n";
+}
+
+void BasicUser::chargeCar(const double& qtty) {
+    if(car == nullptr)
+        throw user_not_has_car();
+    car->charge(qtty);
+}
+
+void BasicUser::clear() {
+    User::clear();
+    car = nullptr;
+    bal = 0;
 }

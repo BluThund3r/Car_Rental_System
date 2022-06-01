@@ -9,40 +9,121 @@
 #include "headers/not_unique_user.h"
 #include "headers/negative_qtty.h"
 #include "headers/not_found.h"
+#include "headers/user_not_has_car.h"
+#include "headers/null_username.h"
+#include "headers/Factory.h"
+#include "headers/FactoryElectrica.h"
+#include "headers/FactoryCombustibil.h"
+#include "headers/FactoryHybrid.h"
+#include "headers/BasicUserBuilder.h"
+#include "headers/BuilderAdmin.h"
+#include "headers/IDgen.h"
+#include "headers/empty_exception.h"
+
+template <typename T>
+T Max(const std::vector<T>& v) {
+    if(v.empty())
+        throw empty_exception();
+    T Max = v[0];
+    for(auto& val : v)
+        if(val > Max)
+            Max = val;
+
+    return Max;
+}
+
+template <>
+std::shared_ptr<Masina> Max(const std::vector<std::shared_ptr<Masina>>& v) {
+    if(v.empty())
+        throw empty_exception();
+    auto Max = v[0];
+    for(auto& m : v)
+        if(m->get_price() > Max->get_price())
+            Max = m;
+
+    return Max;
+}
+
+template <>
+Reprezentanta Max(const std::vector<Reprezentanta>& v) {
+    if(v.empty())
+        throw empty_exception();
+    auto Max = v[0];
+    for(auto& m : v)
+        if(m.getNoCars() > Max.getNoCars())
+            Max = m;
+
+    return Max;
+}
+
+template <typename T>
+T Min(const std::vector<T>& v) {
+    if(v.empty())
+        throw empty_exception();
+    T Min = v[0];
+    for(auto& val : v)
+        if(val < Max)
+            Max = val;
+
+    return Max;
+}
+
+template <>
+std::shared_ptr<Masina> Min(const std::vector<std::shared_ptr<Masina>>& v) {
+    if(v.empty())
+        throw empty_exception();
+    auto Max = v[0];
+    for(auto& m : v)
+        if(m->get_price() < Max->get_price())
+            Max = m;
+
+    return Max;
+}
+
+template <>
+Reprezentanta Min(const std::vector<Reprezentanta>& v) {
+    if(v.empty())
+        throw empty_exception();
+    auto Max = v[0];
+    for(auto& m : v)
+        if(m.getNoCars() < Max.getNoCars())
+            Max = m;
+
+    return Max;
+}
 
 int main() {
-    M_Combustibil c1{"PH 10 GDB", "Renault", "Megane 4", "rosie", 2019, 10000, 199.99, 60, M_Combustibil::motorina};
-    M_Combustibil c2{"B 24 FGS","Audi", "A5", "negru", 2017, 25641, 299.99, 60, M_Combustibil::benzina};
-    M_Combustibil c3{"AG 45 DSG","Ford", "Mustang", "portocaliu", 2019, 6545, 299.99, 65, M_Combustibil::benzina};
-    M_Combustibil c4{"B 999 VLR","BMW", "Seria 3", "negru", 2015, 3415, 350, 60, M_Combustibil::gpl};
-    M_Combustibil c5{"PH 34 GHO","VolksWagen", "Arteon", "albastru", 2020, 5000, 249.99, 68, M_Combustibil::motorina};
+
+    FactoryElectrica fe;
+    FactoryCombustibil fc;
+    std::shared_ptr<Factory> fh(new FactoryHybrid);
+    std::shared_ptr<Masina> m1 = fc.createRenault();
+    std::shared_ptr<Masina> m2 = fc.createAudi();
+    std::shared_ptr<Masina> m3 = fc.createFord();
+    std::shared_ptr<Masina> m4 = fc.createBMW();
+    std::shared_ptr<Masina> m5 = fc.createVW();
+    std::shared_ptr<Masina> m7 = fe.createDacia();
+    std::shared_ptr<Masina> m8 = fe.createRenault();
+    std::shared_ptr<Masina> m9 = fh->createToyota();
+    std::shared_ptr<Masina> m10 = fh->createVW();
     Electrica e1{"B 456 CPP","Tesla", "Model 3", "cyan", 2019, 1560, 399.99, 50000};
-    Electrica e2{"BV 89 HFY","Dacia", "Spring", "alb", 2021, 500, 174.99, 27000};
-    Electrica e3{"IS 10 GDB","Renault", "Megane", "verde", 2022, 7849, 250, 40000};
-    Hybrid h1{"VL 15 SDG","Toyota", "Corola", "argintie", 2017, 89456, 174.99, 6500, M_Combustibil::motorina, 50 };
-    Hybrid h2{"TR 67 GGO","VolksWagen", "Arteon", "galben", 2018, 10000, 249.99, 10000, M_Combustibil::benzina, 65};
+    std::shared_ptr<Masina> m6 = std::make_shared<Electrica>(e1);
+    std::vector<std::shared_ptr<Masina>> v = {m1, m2, m3, m4, m5, m6, m7, m8, m9, m10};
+    std::cout << "Masina cu cel mai mare pret de inchiriere din intreaga aplicatie este: " << Max(v)->get_reg_plate() << '\n';
+    std::cout << "Masina cu cel mai mic pret de inchiriere din intreaga aplicatie este: " << Min(v)->get_reg_plate() << '\n';
+
     try {
-        Electrica t1{"PH 10 GDB","Tesla", "Model 3", "cyan", 2019, 1560, 399.99, 50000};
+        Hybrid t1{"B 456 CPP","Tesla", "Model 3", "cyan", 2019, 1560, 399.99, 6000, Hybrid::motorina, 50};
     }
     catch(not_unique_car& err) {
         std::cout << err.what() << '\n';
     }
 
-    Reprezentanta r1{{}, "Aleea Scolii, nr. 34, Bucuresti"};
-    Reprezentanta r2{{}, "Strada Nalbei, nr. 78, Ploiesti"};
-    Reprezentanta r3{{}, "Strada Torcatori, nr. 63, Pitesti"};
-    Reprezentanta r4{{}, "Bulevardul Independentei, nr. 41, Brasov"};
+    Reprezentanta r1{"Aleea Scolii, nr. 34, Bucuresti"};
+    Reprezentanta r2{"Strada Nalbei, nr. 78, Ploiesti"};
+    Reprezentanta r3{"Strada Torcatori, nr. 63, Pitesti"};
+    Reprezentanta r4{"Bulevardul Independentei, nr. 41, Brasov"};
 
-    std::shared_ptr<Masina> m1 = std::make_shared<M_Combustibil>(c1);
-    std::shared_ptr<Masina> m2 = std::make_shared<M_Combustibil>(c2);
-    std::shared_ptr<Masina> m3 = std::make_shared<M_Combustibil>(c3);
-    std::shared_ptr<Masina> m4 = std::make_shared<M_Combustibil>(c4);
-    std::shared_ptr<Masina> m5 = std::make_shared<M_Combustibil>(c5);
-    std::shared_ptr<Masina> m6 = std::make_shared<Electrica>(e1);
-    std::shared_ptr<Masina> m7 = std::make_shared<Electrica>(e2);
-    std::shared_ptr<Masina> m8 = std::make_shared<Electrica>(e3);
-    std::shared_ptr<Masina> m9 = std::make_shared<Hybrid>(h1);
-    std::shared_ptr<Masina> m10 = std::make_shared<Hybrid>(h2);
 
     r1.add_car(m1);
     r1.add_car(m2);
@@ -52,8 +133,12 @@ int main() {
     r3.add_car(m5);
     r3.add_car(m7);
     r3.add_car(m8);
-    r4.add_car(m9);
+    r3.add_car(m9);
     r4.add_car(m10);
+
+    std::vector<Reprezentanta> rep = {r1, r2, r3, r4};
+    std::cout << "Reprezentanta cu cele mai multe masini din intreaga aplicatie este Reprezentanta #" << Max(rep).get_id() << '\n';
+    std::cout << "Reprezentanta cu cele mai putine masini din intreaga aplicatie este Reprezentanta #" << Min(rep).get_id() << '\n';
 
     Masina *tempMasina = new Hybrid{"DJ 10 APB", "VolksWagen", "Arteon", "galben", 2018, 10000, 249.99, 10000, M_Combustibil::benzina, 65};
     tempMasina->honk();
@@ -96,33 +181,31 @@ int main() {
         std::cout << "Eroare... Conversia nu a reusit!\n";
     }
 
-    Admin a1{"Admin1", "admin1@gmail.com", "16-06-1990", "5054654164894", "Popescu Marinescu", "0716485134", 31, r1};
-    Admin a2{"Admin2", "admin2@yahoo.com", "25-09-2000", "6456154948431", "Ionescu Cristina", "0794321658", 21, r2};
-    Admin a3{"Admin3", "admin3@hotmail.com", "13-03-1989", "1467894516486", "Stanciu Stan","0796541789", 33,r3};
-    Admin a4{"Admin4", "admin4@outlook.com", "04-01-1987", "1894632158492", "Olteanu Mihai","0794569871", 35,r4};
+    BuilderAdmin ba;
+    BasicUserBuilder bu;
 
-    BasicUser u1{"User1", "user1@gmail.com", "23-07-1989", "2890723694216", "Sandu Maria Ioana", "0745164861", 32, 699.99};
-    BasicUser u2{"User2", "user2@gmail.com", "19-04-2000", "5000419251987", "Ionita Daniel-Andrei", "0715679451", 22, 30.85};
+    Admin a1 = ba.username("Admin1").bDay("16-06-1990").name("Popescu Marinescu").phone("0716485134").build();
+    Admin a2 = ba.email("admin2@yahoo.com").name("Ionescu Cristina").age(21).username("Admin2").rep(r2).build();
+    Admin a3 = ba.phone("0796541789").username("Admin3").cnp("1467894516486").bDay("13-03-1989").rep(r3).build();
+    Admin a4 = ba.age(35).phone("0794569871").rep(r4).bDay("04-01-1987").name("Olteanu Mihai").email("admin4@outlook.com").username("Admin4").build();
+
+    BasicUser u1 = bu.username("User1").age(32).name("Sandu Maria-Ioana").bDay("23-07-1989").bal(700).build();
+    BasicUser u2 = bu.age(22).bal(39).name("Ionita Daniel-Andrei").cnp("5000419251987").bDay("19-04-2000").username("User2").email("user2@gmail.com").build();
 
     try {
+        BasicUser b5 = bu.bDay("15-08-2002").phone("0754925647").car(m1).build();
         BasicUser u4{"User1", "user4@gmail.com", "19-04-2000", "5000419251987", "Ionita Daniel-Andrei", "0715679451", 22, 30.85};
         Admin a5{"Admin3", "admin5@hotmail.com", "13-03-1989", "1467894516486", "Stanciu Stan","0796541789", 33,r3};
     }
     catch(not_unique_user& err) {
         std::cout << err.what() << '\n';
     }
+    catch(null_username& err) {
+        std::cout << err.what() << '\n';
+    }
 
     std::cout <<'\n' <<  r1 << "\n" << r3 << '\n';
     std::cout << u1 << '\n' << u2 << '\n';
-
-    try {
-        m1->charge(100000);
-        m6->charge(100000);
-        m3->charge(-100);
-    }
-    catch(negative_qtty& err){
-        std::cout << err.what() << "\nVa rugam incercati din nou, cu o cantitate pozitiva\n";
-    }
 
     try {
         u1.hire(r1, m6);
@@ -134,6 +217,22 @@ int main() {
     }
     catch(not_found& err) {
         std::cout << err.what() << '\n';
+    }
+
+    u1.hire(r1, m2);
+    u2.load_account(1000);
+    u2.hire(r3, m7);
+
+    try {
+        u1.chargeCar(100000);
+        u2.chargeCar(100000);
+        u2.chargeCar(-100);
+    }
+    catch(user_not_has_car& err) {
+        std::cout << err.what() << '\n';
+    }
+    catch(negative_qtty& err){
+        std::cout << err.what() << "\nVa rugam incercati din nou, cu o cantitate pozitiva\n";
     }
 
     std::cout << '\n' << u1 << '\n' << u2 << '\n';

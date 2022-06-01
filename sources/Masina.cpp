@@ -6,6 +6,10 @@
 #include "../headers/not_unique_car.h"
 #include "../headers/negative_qtty.h"
 #include <iostream>
+#include <vector>
+#include <ctime>
+
+IDgen<Masina> Masina::gen_id;
 
 std::unordered_set<std::string> Masina::regPlates;
 
@@ -83,4 +87,11 @@ void Masina::afis(std::ostream& os) const {
         << "\tDisponibilitate: " << ((is_hired)? "Indisponibila momentan\n" : "Disponibila\n");
 
     os << "================== End Masina ==================\n";
+}
+
+std::string Masina::getValidRegPlate() {
+    std::string regPlate = gen_id.generate();
+    while(regPlates.find(regPlate) != regPlates.end())
+        regPlate = gen_id.generate();
+    return regPlate;
 }

@@ -12,7 +12,7 @@
 class not_unique: public std::exception {
 public:
     [[nodiscard]] const char* what() const noexcept override{
-        return "The value of the unique identifier is already assigned to an object";
+        return "Valoarea identificatorului unic este deja atribuita unui obiect";
     }
 };
 

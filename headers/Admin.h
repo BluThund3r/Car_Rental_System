@@ -8,10 +8,15 @@
 
 #include "User.h"
 #include "Reprezentanta.h"
+//#include "BuilderAdmin.h"
+
+class BuilderAdmin;
 
 class Admin: public User {
     Reprezentanta rep;
 public:
+    Admin(): User() {}
+
     Admin(const std::string &username, const std::string &email, const std::string &bDay,
           const std::string &cnp, const std::string &name, const std::string &phone, const int &age,
           const Reprezentanta &rep);
@@ -24,15 +29,19 @@ public:
         return std::make_shared<Admin>(*this);
     }
 
-//    Admin& operator=(const Admin& other);
-//
-//    friend void swap(Admin&, Admin&);
+    Admin& operator=(const Admin& other);
+
+    friend void swap(Admin&, Admin&);
 
     friend std::ostream& operator<<(std::ostream&, const Admin&);
 
     void say_something() const;
 
     void afis(std::ostream&) const override;
+
+    void clear() override;
+
+    friend class BuilderAdmin;
 };
 
 

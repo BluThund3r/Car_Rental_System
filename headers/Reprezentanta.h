@@ -8,9 +8,11 @@
 #include "Masina.h"
 #include <vector>
 #include <memory>
+#include "IDgen.h"
 
 class Reprezentanta{
-    static int gen_id;
+
+    static IDgen<Reprezentanta> gen_id;
     std::vector<std::shared_ptr<Masina>> cars;
     std::string address;
     int id;
@@ -18,11 +20,15 @@ class Reprezentanta{
 public:
     [[nodiscard]] int get_id() const {return id;}
 
+    Reprezentanta(): id(0) {}
+
     const std::shared_ptr<Masina>& delete_car(const std::shared_ptr<Masina>&);
 
     void add_car(const std::shared_ptr<Masina>&);
 
-    Reprezentanta(const std::vector<std::shared_ptr<Masina>>& , const std::string&);
+    int getNoCars() const { return static_cast<int>(cars.size()); }
+
+    Reprezentanta(const std::string& adr, const std::vector<std::shared_ptr<Masina>>& cars = {});
 
     ~Reprezentanta() = default;
 

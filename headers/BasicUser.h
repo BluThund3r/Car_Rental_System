@@ -7,11 +7,16 @@
 
 #include "User.h"
 #include <memory>
+//#include "BasicUserBuilder.h"
+
+class BasicUserBuilder;
 
 class BasicUser: public User {
     std::shared_ptr<Masina> car;
     double bal;
 public:
+    BasicUser(): User(), car(nullptr), bal(0) {}
+
     BasicUser(const std::string &username, const std::string &email, const std::string &bDay,
               const std::string &cnp, const std::string &name, const std::string &phone, const int &age,
               const double& bal = 0, const std::shared_ptr<Masina> &car = nullptr);
@@ -38,6 +43,12 @@ public:
     void say_something() const;
 
     void afis(std::ostream& os) const override;
+
+    void chargeCar(const double& qtty);
+
+    friend class BasicUserBuilder;
+
+    void clear() override;
 };
 
 

@@ -24,7 +24,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml when changing name here
-add_executable(${PROJECT_NAME} main.cpp sources/Masina.cpp headers/Masina.h sources/Reprezentanta.cpp headers/Reprezentanta.h sources/User.cpp headers/User.h sources/Electrica.cpp headers/Electrica.h sources/M_Combustibil.cpp headers/M_Combustibil.h sources/BasicUser.cpp headers/BasicUser.h sources/Admin.cpp headers/Admin.h sources/Hybrid.cpp headers/Hybrid.h headers/not_unique.h headers/negative_qtty.h headers/not_unique_car.h headers/not_unique_user.h headers/not_found.h)
+add_executable(${PROJECT_NAME} main.cpp sources/Masina.cpp headers/Masina.h sources/Reprezentanta.cpp headers/Reprezentanta.h sources/User.cpp headers/User.h sources/Electrica.cpp headers/Electrica.h sources/M_Combustibil.cpp headers/M_Combustibil.h sources/BasicUser.cpp headers/BasicUser.h sources/Admin.cpp headers/Admin.h sources/Hybrid.cpp headers/Hybrid.h headers/not_unique.h headers/negative_qtty.h headers/not_unique_car.h headers/not_unique_user.h headers/not_found.h headers/user_not_has_car.h headers/Factory.h sources/FactoryElectrica.cpp headers/FactoryElectrica.h sources/FactoryCombustibil.cpp headers/FactoryCombustibil.h sources/FactoryHybrid.cpp headers/FactoryHybrid.h sources/BasicUserBuilder.cpp headers/BasicUserBuilder.h headers/null_username.h sources/BuilderAdmin.cpp headers/BuilderAdmin.h headers/IDgen.h headers/empty_exception.h)
 
 ###############################################################################
 

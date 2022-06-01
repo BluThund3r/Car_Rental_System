@@ -8,12 +8,12 @@
 #include <vector>
 
 
-int Reprezentanta::gen_id = 0;
+IDgen<Reprezentanta> Reprezentanta::gen_id;
 
-Reprezentanta::Reprezentanta(const std::vector<std::shared_ptr<Masina>>& cars , const std::string& address):
+Reprezentanta::Reprezentanta(const std::string& address, const std::vector<std::shared_ptr<Masina>>& cars):
         cars(cars),
         address(address),
-        id(++gen_id)
+        id(gen_id.generate())
         {}
 
 Reprezentanta::Reprezentanta(const Reprezentanta& other):

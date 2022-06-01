@@ -8,10 +8,12 @@
 #include <string>
 #include <unordered_set>
 #include <memory>
+#include "IDgen.h"
 
 class Masina{
     //adds the reg_plate to the regPlates set or throws an error if already added
     void addRegPlate();
+    static IDgen<Masina> gen_id;
 protected:
     static std::unordered_set<std::string> regPlates;
     std::string reg_plate, co, model, color;
@@ -48,7 +50,7 @@ public:
 
     virtual void afis(std::ostream&) const = 0;
 
-
+    static std::string getValidRegPlate();
 };
 
 #endif //MAIN_CPP_MASINA_H
