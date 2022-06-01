@@ -28,7 +28,7 @@ public:
 
     int getNoCars() const { return static_cast<int>(cars.size()); }
 
-    Reprezentanta(const std::string& adr, const std::vector<std::shared_ptr<Masina>>& cars = {});
+    explicit Reprezentanta(const std::string& adr, const std::vector<std::shared_ptr<Masina>>& cars = {});
 
     ~Reprezentanta() = default;
 
