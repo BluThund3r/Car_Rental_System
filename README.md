@@ -1,4 +1,4 @@
-#Car Rental System
+# Car Rental System
 
 Acesta este un proiect pentru invatarea conceptelor de baza OOP in limbajul C++.
 
@@ -14,6 +14,6 @@ Concepte OOP acoperite de acest proiect:
   - ierarhie de exceptii (clase derivate din `std::exception`)
   - blocuri try/catch
   - functii si atribute `static`
-  - design patterns (**singleton**, ** **)
+  - design patterns (**factory**, ** builder**)
   - clase template, functii template
   - specializare pe functii/clase template
